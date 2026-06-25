@@ -1,0 +1,13 @@
+{
+  "name": "expense-budget-visualizer",
+  "version": "1.0.0",
+  "description": "Client-side Expense & Budget Visualizer",
+  "scripts": {
+    "test": "vitest --run"
+  },
+  "devDependencies": {
+    "fast-check": "^3.23.2",
+    "happy-dom": "^20.10.6",
+    "vitest": "^4.1.9"
+  }
+}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expense &amp; Budget Visualizer</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <!-- Subtask 3.1: Inline theme-init — runs synchronously before any element is painted (Req 11.4, 11.5) -->
+    <script>
+      (function () {
+        var stored = localStorage.getItem("expense_theme");
+        document.documentElement.dataset.theme =
+          (stored === "dark" || stored === "light") ? stored : "light";
+      })();
+    </script>
+  </head>
+  <body>
+    <!-- Subtask 2.5: Storage error banner — very first child of <body> (Req 6.6) -->
+    <aside
+      id="storage-error-banner"
+      role="alert"
+      aria-live="assertive"
+      hidden
+    >⚠ Local Storage is unavailable. Your data will not be saved between sessions.</aside>
+
+    <header>
+      <h1>Expense &amp; Budget Visualizer</h1>
+      <!-- Subtask 4.2: Theme toggle button (Req 11.1, 11.7) -->
+      <button
+        id="theme-toggle"
+        role="switch"
+        aria-checked="false"
+      >Switch to Dark Mode</button>
+    </header>
+
+    <main>
+      <!-- Subtask 2.1: Balance display — first visible element inside <main> (Req 4.1) -->
+      <div id="balance-display" aria-live="polite">Total: $0.00</div>
+
+      <!-- Subtask 6.2: Budget limit row (Req 9.1) -->
+      <div id="limit-input-row">
+        <input type="number" id="limit-amount" aria-label="Budget limit amount">
+        <button id="set-limit-btn" aria-label="Set spending limit">Set Limit</button>
+        <span id="error-limit" class="field-error" aria-live="polite"></span>
+      </div>
+
+      <!-- Subtask 2.2: Expense entry form (Req 1.1) -->
+      <form id="expense-form" aria-label="Add a new expense">
+        <div class="field-row">
+          <label for="expense-name">Item Name</label>
+          <input
+            type="text"
+            id="expense-name"
+            name="expense-name"
+            required
+            placeholder="e.g. Lunch"
+          />
+          <span id="error-name" class="field-error" aria-live="polite"></span>
+        </div>
+
+        <div class="field-row">
+          <label for="expense-amount">Amount ($)</label>
+          <input
+            type="number"
+            id="expense-amount"
+            name="expense-amount"
+            min="0.01"
+            step="0.01"
+            placeholder="e.g. 12.50"
+          />
+          <span id="error-amount" class="field-error" aria-live="polite"></span>
+        </div>
+
+        <div class="field-row">
+          <label for="expense-category">Category</label>
+          <select id="expense-category" name="expense-category">
+            <option value="" disabled selected>Select a category</option>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Fun">Fun</option>
+          </select>
+          <span id="error-category" class="field-error" aria-live="polite"></span>
+        </div>
+
+        <button type="submit">Add Expense</button>
+      </form>
+
+      <!-- Subtask 2.3: Transaction list and empty placeholder (Req 2.5) -->
+      <ul id="transaction-list" aria-label="Transaction history"></ul>
+      <p id="empty-placeholder">No transactions recorded yet.</p>
+
+      <!-- Subtask 2.4: Chart container and fallbacks (Req 5.4, 5.5) -->
+      <div id="chart-container">
+        <canvas id="expense-chart"></canvas>
+        <p id="chart-placeholder" hidden>No data to display.</p>
+      </div>
+      <p id="chart-unavailable" hidden>Chart unavailable — could not load charting library.</p>
+
+      <!-- Subtask 8.2: Monthly Summary toggle and panel (Req 12.1) -->
+      <button id="summary-toggle">Show Monthly Summary</button>
+      <section id="monthly-summary" hidden></section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/app.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,591 @@
+/* ============================================================
+   Expense & Budget Visualizer — styles.css
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   Task 3.1 — CSS Custom Properties & Base Reset
+   ------------------------------------------------------------ */
+:root {
+  /* Color palette */
+  --color-primary:       #4f7ef8;   /* primary accent (buttons, focus rings) */
+  --color-bg:            #f2f4f8;   /* page background */
+  --color-surface:       #ffffff;   /* card / form surface */
+  --color-text:          #1a1a2e;   /* default body text */
+  --color-text-muted:    #6b7280;   /* secondary / placeholder text */
+  --color-error:         #dc2626;   /* error red */
+  --color-border:        #d1d5db;   /* input / card borders */
+
+  /* Category colors (used in chart legend and list badges) */
+  --color-food:          #f59e0b;   /* amber  — Food */
+  --color-transport:     #3b82f6;   /* blue   — Transport */
+  --color-fun:           #10b981;   /* emerald — Fun */
+
+  /* Banner color */
+  --color-amber-bg:      #fef3c7;
+  --color-amber-border:  #f59e0b;
+
+  /* Typography */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+/* ------------------------------------------------------------
+   Task 3.2 — Dark theme overrides (Req 11.6, 11.8)
+   All elements using these custom properties reflect the new
+   palette automatically when data-theme="dark" is set on <html>.
+   ------------------------------------------------------------ */
+[data-theme="dark"] {
+  --color-bg:      #0f1117;   /* dark page background */
+  --color-surface: #1e2130;   /* dark card / form surface */
+  --color-text:    #e2e8f0;   /* light body text */
+  --color-border:  #3a3f55;   /* subtle dark borders */
+}
+
+/* Box-sizing reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Centered single-column layout */
+body {
+  background-color: var(--color-bg);
+  min-height: 100vh;
+  padding: 0 16px 48px;
+}
+
+header,
+main {
+  max-width: 640px;
+  margin-inline: auto;
+}
+
+header {
+  padding: 24px 0 8px;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 8px;
+}
+
+
+/* ------------------------------------------------------------
+   Task 3.2 — Balance Display
+   ------------------------------------------------------------ */
+#balance-display {
+  font-size: 2.25rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--color-primary);
+  margin-top: 16px;
+  padding: 16px;
+  letter-spacing: -0.5px;
+}
+
+/* Task 6.3 — Over-limit visual indicator (Req 10.1) */
+#balance-display.over-limit {
+  border: 2px solid #dc2626;
+  background-color: #fef2f2;
+  border-radius: 8px;
+  color: #dc2626;
+}
+
+[data-theme="dark"] #balance-display.over-limit {
+  background-color: #450a0a;
+  border-color: #f87171;
+  color: #f87171;
+}
+
+/* Task 6.3 — Budget limit input row (Req 9.1) */
+#limit-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+  flex-wrap: wrap;
+}
+
+#limit-input-row input[type="number"] {
+  padding: 6px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  width: 120px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+#limit-input-row input[type="number"]:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(79, 126, 248, 0.2);
+}
+
+#set-limit-btn {
+  padding: 6px 14px;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+#set-limit-btn:hover {
+  background-color: #3b6ae0;
+}
+
+
+/* ------------------------------------------------------------
+   Task 3.3 — Expense Form (card style)
+   ------------------------------------------------------------ */
+#expense-form {
+  background-color: var(--color-surface);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Each label + input + error row */
+.field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field-row label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.field-row input,
+.field-row select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.field-row input:focus,
+.field-row select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(79, 126, 248, 0.2);
+}
+
+/* Inline field error — uses visibility (not display:none) to reserve space */
+.field-error {
+  font-size: 0.85rem;
+  color: var(--color-error);
+  min-height: 1.2em;       /* reserves space even when hidden */
+  visibility: hidden;
+}
+
+.field-error:not(:empty) {
+  visibility: visible;
+}
+
+/* Full-width submit button */
+#expense-form button[type="submit"] {
+  width: 100%;
+  padding: 10px 16px;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.1s;
+}
+
+#expense-form button[type="submit"]:hover {
+  background-color: #3b6ae0;
+}
+
+#expense-form button[type="submit"]:active {
+  transform: scale(0.98);
+}
+
+
+/* ------------------------------------------------------------
+   Task 3.4 — Transaction List
+   ------------------------------------------------------------ */
+#transaction-list {
+  list-style: none;
+  max-height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  /* Subtle scrollbar styling for webkit browsers */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+#transaction-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+#transaction-list::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 3px;
+}
+
+/* Individual transaction row */
+#transaction-list li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.9375rem;
+}
+
+/* Category color accent strip on left edge */
+#transaction-list li[data-category="Food"] {
+  border-left: 4px solid var(--color-food);
+}
+
+#transaction-list li[data-category="Transport"] {
+  border-left: 4px solid var(--color-transport);
+}
+
+#transaction-list li[data-category="Fun"] {
+  border-left: 4px solid var(--color-fun);
+}
+
+/* Transaction info section */
+.transaction-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.transaction-name {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.transaction-meta {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.transaction-amount {
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--color-text);
+}
+
+/* Compact delete button */
+.delete-btn {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  font-size: 0.8125rem;
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--color-error);
+  background-color: transparent;
+  border: 1px solid var(--color-error);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.delete-btn:hover {
+  background-color: var(--color-error);
+  color: #ffffff;
+}
+
+/* Empty-state placeholder */
+#empty-placeholder {
+  text-align: center;
+  font-style: italic;
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+  padding: 8px 0;
+}
+
+
+/* ------------------------------------------------------------
+   Task 3.5 — Chart Container
+   ------------------------------------------------------------ */
+#chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 400px;
+  margin-inline: auto;
+  width: 100%;
+}
+
+#chart-container canvas {
+  max-width: 100%;
+}
+
+#chart-placeholder {
+  text-align: center;
+  font-style: italic;
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+  padding: 16px 0;
+}
+
+#chart-unavailable {
+  text-align: center;
+  font-style: italic;
+  color: var(--color-error);
+  font-size: 0.9375rem;
+  padding: 8px 0;
+}
+
+
+/* ------------------------------------------------------------
+   Task 3.6 — Storage Error Banner
+   ------------------------------------------------------------ */
+#storage-error-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 12px 16px;
+  background-color: var(--color-amber-bg);
+  border-bottom: 2px solid var(--color-amber-border);
+  color: #78350f;           /* dark amber text for legibility */
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-align: center;
+  z-index: 1000;
+  /* Shown when JS removes the [hidden] attribute */
+}
+
+/* When [hidden] is present, keep the element hidden */
+#storage-error-banner[hidden] {
+  display: none;
+}
+
+/* Offset page content when banner is visible */
+body:has(#storage-error-banner:not([hidden])) header {
+  margin-top: 52px;
+}
+
+
+/* ------------------------------------------------------------
+   Task 3.7 — Responsive: max-width 480px
+   Requirement 8.1
+   ------------------------------------------------------------ */
+@media (max-width: 480px) {
+  :root {
+    font-size: 15px;
+  }
+
+  body {
+    padding: 0 10px 32px;
+  }
+
+  header {
+    padding: 16px 0 6px;
+  }
+
+  header h1 {
+    font-size: 1.25rem;
+  }
+
+  main {
+    gap: 16px;
+  }
+
+  /* Balance display — slightly smaller on mobile */
+  #balance-display {
+    font-size: 1.75rem;
+    padding: 12px 8px;
+    margin-top: 8px;
+  }
+
+  /* Form card — reduced padding */
+  #expense-form {
+    padding: 16px 14px;
+    gap: 12px;
+    border-radius: 10px;
+  }
+
+  #expense-form button[type="submit"] {
+    padding: 9px 12px;
+    font-size: 0.9375rem;
+  }
+
+  /* Transaction list — keep scrollable, tighter items */
+  #transaction-list {
+    max-height: 260px;
+  }
+
+  #transaction-list li {
+    padding: 8px 10px;
+    font-size: 0.875rem;
+    gap: 8px;
+  }
+
+  .delete-btn {
+    padding: 3px 8px;
+    font-size: 0.75rem;
+  }
+
+  .transaction-meta {
+    font-size: 0.75rem;
+  }
+
+  /* Chart — full width on small screens */
+  #chart-container {
+    max-width: 100%;
+  }
+
+  /* Storage banner — slightly smaller text */
+  #storage-error-banner {
+    font-size: 0.875rem;
+    padding: 10px 12px;
+  }
+
+  body:has(#storage-error-banner:not([hidden])) header {
+    margin-top: 46px;
+  }
+}
+
+
+/* ------------------------------------------------------------
+   Task 8.3 — Monthly Summary View (Req 12.1 – 12.8)
+   ------------------------------------------------------------ */
+
+/* Summary_Toggle button — consistent with other action buttons */
+#summary-toggle {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.1s;
+  text-align: center;
+}
+
+#summary-toggle:hover {
+  background-color: #3b6ae0;
+}
+
+#summary-toggle:active {
+  transform: scale(0.98);
+}
+
+/* Monthly summary panel */
+#monthly-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 0;
+}
+
+/* Each month section */
+.month-group {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin: 0;
+}
+
+/* Month group heading */
+.month-group h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+
+/* Per-category subtotal list */
+.month-group ul {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.month-group ul li {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  padding: 2px 0;
+}
+
+/* Collapse/expand toggle button inside month group */
+.month-group > button {
+  padding: 4px 12px;
+  font-size: 0.8125rem;
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--color-primary);
+  background-color: transparent;
+  border: 1px solid var(--color-primary);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+  margin-bottom: 4px;
+}
+
+.month-group > button:hover {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+/* Summary empty-state placeholder */
+#summary-placeholder {
+  text-align: center;
+  font-style: italic;
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+  padding: 16px 0;
+}
